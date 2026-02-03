@@ -30,7 +30,8 @@
 		"DisableTeleportMixin",
 		"CatBaseGoalMixin",
 		"CatPathfindingMixin",
-		"SafeTeleportMixin"
+		"SafeTeleportMixin",
+		"RabbitCaptureMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

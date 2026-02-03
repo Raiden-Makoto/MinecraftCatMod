@@ -2,6 +2,8 @@ package com.example.mixin.client;
 
 import com.example.client.render.CatArmorFeatureRenderer;
 import com.example.client.render.CatArmorRenderStateAccessor;
+import com.example.client.render.CatHeldItemLayer;
+import com.example.client.render.CatRenderStateMainHandAccessor;
 import com.example.entity.CatArmorAccessor;
 import net.minecraft.client.model.animal.feline.CatModel;
 import net.minecraft.client.renderer.entity.CatRenderer;
@@ -22,12 +24,14 @@ public abstract class CatRendererMixin {
     private void MCCatMod$addArmorLayer(EntityRendererProvider.Context context, CallbackInfo ci) {
         RenderLayerParent<CatRenderState, CatModel> parent = (RenderLayerParent<CatRenderState, CatModel>) (Object) this;
         ((LivingEntityRendererInvoker) (Object) this).MCCatMod$callAddLayer(new CatArmorFeatureRenderer(parent, context.getModelSet()));
+        ((LivingEntityRendererInvoker) (Object) this).MCCatMod$callAddLayer(new CatHeldItemLayer(parent));
     }
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void MCCatMod$copyArmorToRenderState(Cat cat, CatRenderState catRenderState, float f, CallbackInfo ci) {
         ItemStack armor = ((CatArmorAccessor) cat).MCCatMod$getArmor();
         ((CatArmorRenderStateAccessor) catRenderState).MCCatMod$setArmorStack(armor.copy());
+        ((CatRenderStateMainHandAccessor) catRenderState).MCCatMod$setMainHandStack(cat.getMainHandItem().copy());
     }
 }
 

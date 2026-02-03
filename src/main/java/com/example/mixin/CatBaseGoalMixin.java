@@ -4,6 +4,7 @@ import com.example.entity.ai.CatBedSleepGoal;
 import com.example.entity.ai.CatLongRangeHuntGoal;
 import com.example.entity.ai.CatZoomiesGoal;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.level.Level;
@@ -27,10 +28,11 @@ public abstract class CatBaseGoalMixin extends Mob {
     private void MCCatMod$injectGoals(CallbackInfo ci) {
         this.goalSelector.removeAllGoals(g -> {
             String name = g.getClass().getName();
-            return name.contains("RelaxOnOwner") || name.contains("LieOnBed") || name.contains("SitOnBlock");
+            return name.contains("RelaxOnOwner") || name.contains("LieOnBed") || name.contains("SitOnBlock") || name.contains("OcelotAttackGoal");
         });
 
         this.goalSelector.addGoal(4, new CatZoomiesGoal((Cat) (Object) this));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal((Cat) (Object) this, 1.2, true));
         this.targetSelector.addGoal(5, new CatLongRangeHuntGoal((Cat) (Object) this));
     }
 }

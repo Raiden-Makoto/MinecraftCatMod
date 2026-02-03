@@ -6,41 +6,36 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.feline.Cat;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
 public class CatLongRangeHuntGoal extends NearestAttackableTargetGoal<Rabbit> {
+    // 9pm–10:30pm (15000–16500 ticks) so cats can get home before bedtime
+    private static final long HUNT_START_TICKS = 15000L;
+    private static final long HUNT_END_TICKS = 16500L;
+    private static final double HUNT_RANGE = 12.0;
+
     private final Cat cat;
 
     public CatLongRangeHuntGoal(Cat cat) {
-        // 10 is the reciprocal of the chance to check for target per tick
-        // 64.0D is the 4-chunk (64 block) follow range
         super(cat, Rabbit.class, 10, true, false, null);
         this.cat = cat;
         this.setFlags(EnumSet.of(Goal.Flag.TARGET));
     }
 
     @Override
+    protected double getFollowDistance() {
+        return HUNT_RANGE;
+    }
+
+    @Override
     public boolean canUse() {
-        // 1. Daytime check: (0 to 13000 ticks)
+        // 1. Hunt window: 9pm–10:30pm only (cats get home before bedtime)
         long time = cat.level().getDayTime() % 24000;
-        if (time > 13000) return false;
+        if (time < HUNT_START_TICKS || time >= HUNT_END_TICKS) return false;
 
-        // 2. Tame & Rested check
-        if (!cat.isTame() || !((CatRestedAccessor) cat).MCCatMod$isRested()) {
-            return false;
-        }
-
-        // 3. Distance to Owner check: 32 blocks (1024 sq distance) - cat must be left behind
-        Player owner = (Player) cat.getOwner();
-        if (owner == null || cat.distanceToSqr(owner) < 1024.0D) {
-            return false;
-        }
-
-        // 4. Sitting check: Only cats that were told to stay (sitting) and left behind get the hunt urge.
-        //    Non-sitting cats would follow/teleport to owner; sitting cats stay home and may hunt instead.
-        if (!cat.isOrderedToSit()) return false;
+        // 2. Tame, must belong to player, and rested (have cat bed to drop loot)
+        if (!cat.isTame() || cat.getOwner() == null || !((CatRestedAccessor) cat).MCCatMod$isRested()) return false;
 
         return super.canUse();
     }
@@ -48,8 +43,6 @@ public class CatLongRangeHuntGoal extends NearestAttackableTargetGoal<Rabbit> {
     @Override
     public void start() {
         ((LongRangeHuntState) this.cat).MCCatMod$setLongRangeHunting(true);
-        // Get up from sitting so the cat can move and hunt
-        this.cat.setOrderedToSit(false);
         this.cat.setSprinting(true);
         super.start();
     }
@@ -58,8 +51,6 @@ public class CatLongRangeHuntGoal extends NearestAttackableTargetGoal<Rabbit> {
     public void stop() {
         ((LongRangeHuntState) this.cat).MCCatMod$setLongRangeHunting(false);
         this.cat.setSprinting(false);
-        // Sit back down when done hunting (stays at home)
-        this.cat.setOrderedToSit(true);
         super.stop();
     }
 }
