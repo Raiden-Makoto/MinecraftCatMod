@@ -10,9 +10,9 @@ import net.minecraft.world.entity.animal.feline.Cat;
 import java.util.EnumSet;
 
 public class CatLongRangeHuntGoal extends NearestAttackableTargetGoal<Rabbit> {
-    // 9pm–10:30pm (15000–16500 ticks) so cats can get home before bedtime
+    // 0=6am. Hunting 21:00-23:00 (9pm-11pm)
     private static final long HUNT_START_TICKS = 15000L;
-    private static final long HUNT_END_TICKS = 16500L;
+    private static final long HUNT_END_TICKS = 17000L;
     private static final double HUNT_RANGE = 12.0;
 
     private final Cat cat;

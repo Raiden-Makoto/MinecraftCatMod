@@ -19,8 +19,9 @@ public final class CatZoomiesGoal extends Goal {
     // If both are 0, zoomies are effectively disabled.
     private static final int MCCatMod$ZOOMIES_BASE_TICKS = 100;
     private static final int MCCatMod$ZOOMIES_RANDOM_EXTRA_TICKS = 100;
-    private static final long MCCatMod$ZOOMIES_START_TIME = 22000L;  // 4am
-    private static final long MCCatMod$ZOOMIES_END_TIME = 2000L;     // 6am (wraps)
+    // 0=6am. Zoomies 06:00-07:00
+    private static final long MCCatMod$ZOOMIES_START_TIME = 0L;
+    private static final long MCCatMod$ZOOMIES_END_TIME = 1000L;
 
     private final Cat cat;
     private int zoomieTicks;
@@ -50,7 +51,7 @@ public final class CatZoomiesGoal extends Goal {
         }
 
         long dayTime = this.cat.level().getDayTime() % 24000L;
-        boolean inZoomieWindow = dayTime >= MCCatMod$ZOOMIES_START_TIME || dayTime < MCCatMod$ZOOMIES_END_TIME;
+        boolean inZoomieWindow = dayTime >= MCCatMod$ZOOMIES_START_TIME && dayTime < MCCatMod$ZOOMIES_END_TIME;
         if (!inZoomieWindow) {
             return false;
         }

@@ -25,9 +25,10 @@ public class CatBedSleepGoal extends Goal {
     private static final float MCCatMod$HEAL_AMOUNT = 0.5f;
     private static final int MCCatMod$WAKE_CHECK_INTERVAL = 80;
     private static final float MCCatMod$WAKE_CHANCE = 0.05f;
-    private static final long MCCatMod$SLEEP_START = 12000L;
+    // 0=6am. Sleep 23:00-06:00 (17000-0). Wake window 04:00-06:00 (22000-0)
+    private static final long MCCatMod$SLEEP_START = 17000L;
     private static final long MCCatMod$WAKE_WINDOW_START = 22000L;
-    private static final long MCCatMod$WAKE_WINDOW_END = 2000L;
+    private static final long MCCatMod$WAKE_WINDOW_END = 0L;
 
     private final Cat cat;
     private final double speed;
