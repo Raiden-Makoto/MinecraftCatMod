@@ -23,6 +23,7 @@
 		"PlayerRagdollTradeCooldownMixin",
 		"CatZoomieStateMixin",
 		"CatLongRangeHuntStateMixin",
+		"CatBedReleaseMixin",
 		"CatRestedMixin",
 		"CatBedOffsetMixin",
 		"CatRelaxStateAccessor",

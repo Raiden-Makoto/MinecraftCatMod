@@ -1,6 +1,7 @@
 package com.example.entity.ai;
 
 import com.example.block.entity.CatBedBlockEntity;
+import com.example.entity.CatBedAccessor;
 import com.example.entity.CatRestedAccessor;
 import com.example.entity.ZoomieState;
 import com.example.mixin.CatRelaxStateAccessor;
@@ -13,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 public class CatBedSleepGoal extends Goal {
     private static final int MCCatMod$HORIZONTAL_RANGE = 16;
@@ -86,13 +88,11 @@ public class CatBedSleepGoal extends Goal {
         return closest;
     }
 
-    private void MCCatMod$releaseClaimedBed() {
-        if (MCCatMod$claimedBedPos != null && cat.level().getBlockEntity(MCCatMod$claimedBedPos) instanceof CatBedBlockEntity bedEntity) {
-            if (bedEntity.MCCatMod$isClaimedBy(cat)) {
-                bedEntity.MCCatMod$release();
-            }
+    private void MCCatMod$clearBedIfDestroyed() {
+        Optional<BlockPos> bed = ((CatBedAccessor) cat).MCCatMod$getCatBed();
+        if (bed.isPresent() && !MCCatMod$isValidBed(cat.level(), bed.get())) {
+            ((CatBedAccessor) cat).MCCatMod$setCatBed(Optional.empty());
         }
-        MCCatMod$claimedBedPos = null;
     }
 
     @Override
@@ -105,6 +105,12 @@ public class CatBedSleepGoal extends Goal {
         }
         if (cat.isOrderedToSit()) {
             return false;
+        }
+        MCCatMod$clearBedIfDestroyed();
+        Optional<BlockPos> associatedBed = ((CatBedAccessor) cat).MCCatMod$getCatBed();
+        if (associatedBed.isPresent() && MCCatMod$isValidBed(cat.level(), associatedBed.get())) {
+            MCCatMod$targetBed = associatedBed.get();
+            return true;
         }
         MCCatMod$targetBed = MCCatMod$findBed();
         return MCCatMod$targetBed != null;
@@ -138,6 +144,7 @@ public class CatBedSleepGoal extends Goal {
             if (bedEntity.MCCatMod$canBeClaimedBy(cat)) {
                 bedEntity.MCCatMod$claim(cat);
                 MCCatMod$claimedBedPos = MCCatMod$targetBed.immutable();
+                ((CatBedAccessor) cat).MCCatMod$setCatBed(Optional.of(MCCatMod$targetBed.immutable()));
             }
         }
         cat.getNavigation().moveTo(
@@ -206,7 +213,7 @@ public class CatBedSleepGoal extends Goal {
 
     @Override
     public void stop() {
-        MCCatMod$releaseClaimedBed();
+        MCCatMod$claimedBedPos = null;
         MCCatMod$targetBed = null;
         ((CatRelaxStateAccessor) cat).MCCatMod$invokeSetRelaxStateOne(false);
         cat.setLying(false);

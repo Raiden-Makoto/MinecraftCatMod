@@ -55,7 +55,8 @@ public class CatHeldItemLayer extends RenderLayer<CatRenderState, CatModel> {
         poseStack.pushPose();
         CatModel model = getParentModel();
         model.root().getChild("head").translateAndRotate(poseStack);
-        poseStack.translate(0.0, -0.05, -0.3);
+        // Position in mouth: forward (nose) and down from head pivot
+        poseStack.translate(0.0, -0.25, -0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0f));
         poseStack.mulPose(Axis.XP.rotationDegrees(-90.0f));
         poseStack.scale(0.5f, 0.5f, 0.5f);
