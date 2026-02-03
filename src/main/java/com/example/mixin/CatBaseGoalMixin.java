@@ -1,6 +1,7 @@
 package com.example.mixin;
 
 import com.example.entity.ai.CatBedSleepGoal;
+import com.example.entity.ai.CatDeliverLootGoal;
 import com.example.entity.ai.CatLongRangeHuntGoal;
 import com.example.entity.ai.CatZoomiesGoal;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +22,7 @@ public abstract class CatBaseGoalMixin extends Mob {
 
     @Inject(method = "registerGoals", at = @At("HEAD"))
     private void MCCatMod$injectSleepGoalFirst(CallbackInfo ci) {
+        this.goalSelector.addGoal(0, new CatDeliverLootGoal((Cat) (Object) this));
         this.goalSelector.addGoal(0, new CatBedSleepGoal((Cat) (Object) this, 1.2));
     }
 
