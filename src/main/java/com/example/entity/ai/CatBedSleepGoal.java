@@ -4,6 +4,8 @@ import com.example.block.entity.CatBedBlockEntity;
 import com.example.entity.CatBedAccessor;
 import com.example.entity.CatRestedAccessor;
 import com.example.entity.ZoomieState;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import com.example.mixin.CatRelaxStateAccessor;
 import com.example.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -29,6 +31,7 @@ public class CatBedSleepGoal extends Goal {
     private static final long MCCatMod$SLEEP_START = 17000L;
     private static final long MCCatMod$WAKE_WINDOW_START = 22000L;
     private static final long MCCatMod$WAKE_WINDOW_END = 0L;
+    private static final float MCCatMod$GIFT_CHANCE = 0.7f;
 
     private final Cat cat;
     private final double speed;
@@ -189,6 +192,12 @@ public class CatBedSleepGoal extends Goal {
                 ((ZoomieState) cat).setZooming(true);
                 ((CatRelaxStateAccessor) cat).MCCatMod$invokeSetRelaxStateOne(false);
                 cat.setLying(false);
+                if (cat.level() instanceof ServerLevel serverLevel
+                    && ((CatRestedAccessor) cat).MCCatMod$isRested()
+                    && cat.getOwner() != null
+                    && cat.getRandom().nextFloat() < MCCatMod$GIFT_CHANCE) {
+                    cat.dropFromGiftLootTable(serverLevel, BuiltInLootTables.CAT_MORNING_GIFT, (level, stack) -> cat.spawnAtLocation(level, stack));
+                }
             }
             if (MCCatMod$ticksOnBed % MCCatMod$HEAL_INTERVAL == 0 && cat.getHealth() < cat.getMaxHealth()) {
                 cat.heal(MCCatMod$HEAL_AMOUNT);
