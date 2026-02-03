@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.example.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"LivingEntityRendererInvoker",
+		"CatRendererMixin",
+		"CatRenderStateArmorMixin",
+		"ExampleClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

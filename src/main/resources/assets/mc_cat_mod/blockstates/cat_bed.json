@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    { "when": { "facing": "north" }, "apply": { "model": "mc_cat_mod:block/cat_bed", "y": 0 } },
+    { "when": { "facing": "east" }, "apply": { "model": "mc_cat_mod:block/cat_bed", "y": 90 } },
+    { "when": { "facing": "south" }, "apply": { "model": "mc_cat_mod:block/cat_bed", "y": 180 } },
+    { "when": { "facing": "west" }, "apply": { "model": "mc_cat_mod:block/cat_bed", "y": 270 } }
+  ]
+}
+

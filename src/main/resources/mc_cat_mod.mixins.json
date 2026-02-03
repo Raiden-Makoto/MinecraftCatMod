@@ -1,0 +1,41 @@
+{
+	"required": true,
+	"package": "com.example.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"CatHealMixin",
+		"CatArmorInteractionMixin",
+		"CatLoadResetMixin",
+		"CatArmorDataMixin",
+		"CatArmorDamageMixin",
+		"BlackCatDamageMixin",
+		"CalicoRevengeMixin",
+		"TabbyXPMixin",
+		"SiameseLootMixin",
+		"SiameseLootingLevelMixin",
+		"ShorthairFallMixin",
+		"CalicoTargetFixMixin",
+		"TuxedoGoalMixin",
+		"PersianFurnaceMixin",
+		"AbstractFurnaceBlockEntityAccessor",
+		"RagdollGolemMixin",
+		"RagdollTradeMixin",
+		"PlayerRagdollTradeCooldownMixin",
+		"CatZoomieStateMixin",
+		"CatLongRangeHuntStateMixin",
+		"CatRestedMixin",
+		"CatBedOffsetMixin",
+		"CatRelaxStateAccessor",
+		"CatnipInteractionMixin",
+		"DisableTeleportMixin",
+		"CatBaseGoalMixin",
+		"CatPathfindingMixin",
+		"SafeTeleportMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

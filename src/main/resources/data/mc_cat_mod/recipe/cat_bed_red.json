@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": "minecraft:red_carpet"
+  },
+  "result": {
+    "components": {
+      "minecraft:dyed_color": 11546150,
+      "minecraft:block_state": {
+        "color": "red"
+      }
+    },
+    "id": "mc_cat_mod:cat_bed",
+    "count": 1
+  }
+}
+
